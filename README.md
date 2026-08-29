@@ -12,3 +12,7 @@ npm run dev
 ```
 
 min.ug takes inspiration from [ha.mr](https://github.com/p2r3/ha.mr) and aims to improve on it with greater extensibility and more efficient compression.
+
+## License
+
+MIT © Khoi Duong. See [LICENSE](LICENSE).

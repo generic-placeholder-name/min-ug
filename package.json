@@ -4,6 +4,7 @@
   "private": true,
   "type": "module",
   "description": "min.ug — exact, measurable stateless URL compression",
+  "license": "MIT",
   "engines": {
     "node": ">=22.13.0"
   },
