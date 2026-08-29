@@ -2,10 +2,6 @@ import { readFile } from "node:fs/promises";
 import { dirname, resolve } from "node:path";
 import { performance } from "node:perf_hooks";
 
-import {
-  createHamrBaseline,
-  verifyHamrVendor
-} from "../baselines/hamr.js";
 import { classifyDifference } from "./classify-failure.js";
 import { describe } from "./stats.js";
 import { toJsonLines, writeFileAtomic, writeJsonAtomic } from "../lib/files.js";
@@ -40,11 +36,10 @@ export interface BenchmarkMetadata {
 }
 
 export interface RunBenchmarkOptions {
-  readonly codec?: BenchmarkCodec;
-  readonly baselineMetadata?: BenchmarkMetadata;
+  readonly codec: BenchmarkCodec;
+  readonly baselineMetadata: BenchmarkMetadata;
   readonly corpusPath: string;
   readonly split: string;
-  readonly alphabet?: string | undefined;
   readonly limit?: number | undefined;
   readonly warmup?: number | undefined;
   readonly sampleCount?: number | undefined;
@@ -208,12 +203,8 @@ function failureRecord (result: BenchmarkResult) {
 }
 
 export async function runBenchmark (options: RunBenchmarkOptions) {
-  const codec = options.codec ?? createHamrBaseline({ alphabet: options.alphabet });
-  const baselineMetadata = options.baselineMetadata ?? (
-    options.codec
-      ? { schemaVersion: 1, name: codec.id, revision: codec.id }
-      : await verifyHamrVendor()
-  );
+  const codec = options.codec;
+  const baselineMetadata = options.baselineMetadata;
   const corpus = await loadCorpus(options.corpusPath);
   let selected = selectRecords(corpus.records, options.split);
   if (options.limit !== undefined) selected = selected.slice(0, options.limit);

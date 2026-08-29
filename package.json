@@ -20,7 +20,6 @@
     "corpus:fetch": "tsx tools/corpus/fetch.ts",
     "corpus:prepare": "tsx tools/corpus/cli.ts prepare",
     "corpus:common-crawl": "tsx tools/corpus/common-crawl/cli.ts",
-    "bench": "tsx tools/bench/cli.ts",
     "fixture:identity": "tsx tools/build-identity-codec.ts",
     "codec:neural:build": "tsx tools/build-neural-codecs.ts",
     "codec:neural:compare-build": "tsx tools/build-neural-codecs.ts --compare-entropy-coders",
