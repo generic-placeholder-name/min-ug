@@ -407,26 +407,30 @@ function showCompressor (): void {
   input.focus();
 }
 
+function handleHashChange (): void {
+  if (!codec) return;
+  if (window.location.hash.length > 1) {
+    try {
+      showRedirect(codec.decodeHash(window.location.hash));
+      return;
+    } catch (error) {
+      console.error(error);
+      history.replaceState(null, "", `${window.location.pathname}${window.location.search}`);
+      showCompressor();
+      setInputMessage("This compressed link is invalid.");
+      return;
+    }
+  }
+  showCompressor();
+  updateOutput();
+}
+
 async function initialize (): Promise<void> {
   try {
     const response = await fetch(wasmUrl);
     if (!response.ok) throw new Error(`Wasm request failed with ${response.status}`);
     codec = await instantiateV1Codec(await response.arrayBuffer());
-
-    if (window.location.hash.length > 1) {
-      try {
-        showRedirect(codec.decodeHash(window.location.hash));
-        return;
-      } catch (error) {
-        console.error(error);
-        history.replaceState(null, "", `${window.location.pathname}${window.location.search}`);
-        setInputMessage("This compressed link is invalid.");
-        input.focus();
-        return;
-      }
-    }
-    input.focus();
-    updateOutput();
+    handleHashChange();
   } catch (error) {
     setInputMessage("The compressor could not load. Refresh the page.");
     console.error(error);
@@ -480,6 +484,7 @@ saveQr.addEventListener("click", () => {
   });
 });
 backHome.addEventListener("click", showCompressor);
+window.addEventListener("hashchange", handleHashChange);
 
 updateCanonicalizationHelp();
 updateQrCorrectionLabel();

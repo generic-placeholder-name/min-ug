@@ -110,7 +110,7 @@ header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  width: min(100% - 2rem, 76rem);
+  width: calc(100% - 2rem);
   margin-inline: auto;
   padding-block: 1rem;
 }
@@ -156,7 +156,7 @@ header .theme-toggle:hover:not(:disabled) {
 footer {
   display: flex;
   justify-content: flex-end;
-  width: min(100% - 2rem, 76rem);
+  width: calc(100% - 2rem);
   margin-inline: auto;
   padding-block: 0.8rem 1rem;
   font-size: 0.72rem;
@@ -289,7 +289,7 @@ h1 {
   border-radius: 0.5rem;
   color: var(--foreground);
   background: var(--background);
-  min-width: 8.5rem;
+  min-width: 11rem;
 }
 
 .option-help {
@@ -458,6 +458,10 @@ button:disabled {
 .save-button {
   min-height: 2.7rem;
   padding-inline: 1.1rem;
+}
+
+#redirect-view:focus {
+  outline: none;
 }
 
 .redirect h1 {
