@@ -1,0 +1,25 @@
+[package]
+name = "minug-neural-codec"
+version = "0.0.0"
+edition = "2024"
+publish = false
+
+[lib]
+crate-type = ["cdylib"]
+
+[features]
+default = []
+gru-l = []
+transformer-l = []
+arithmetic = []
+rans = ["dep:ans"]
+
+[dependencies]
+ans = { version = "0.4.0", optional = true }
+
+[profile.release]
+opt-level = 3
+lto = "fat"
+codegen-units = 1
+panic = "abort"
+strip = true

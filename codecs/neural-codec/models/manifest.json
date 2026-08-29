@@ -1,0 +1,169 @@
+{
+  "schemaVersion": 2,
+  "format": "minug-weight-only-int8-v2",
+  "alphabet": "!#$%&'()*+,-./0123456789:;=?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~",
+  "symbolCount": 92,
+  "scales": "symmetric-f32-per-output-row",
+  "models": {
+    "gru-l": {
+      "path": "codecs\\neural-codec\\models\\gru-l.bin",
+      "bytes": 318019,
+      "sha256": "5a933f28d5e03095a9fbec49534a365d01dc4589b177074ecd4fcdba4e6b0ed8",
+      "quantization": [
+        {
+          "name": "embedding.weight",
+          "rows": 92,
+          "columns": 96,
+          "maximumAbsoluteError": 0.011000402271747589,
+          "meanAbsoluteError": 0.0019780711736530066
+        },
+        {
+          "name": "recurrent.weight_ih_l0",
+          "rows": 768,
+          "columns": 96,
+          "maximumAbsoluteError": 0.010700643062591553,
+          "meanAbsoluteError": 0.002218192210420966
+        },
+        {
+          "name": "recurrent.weight_hh_l0",
+          "rows": 768,
+          "columns": 256,
+          "maximumAbsoluteError": 0.011427849531173706,
+          "meanAbsoluteError": 0.0018399510299786925
+        },
+        {
+          "name": "projection.weight",
+          "rows": 96,
+          "columns": 256,
+          "maximumAbsoluteError": 0.01755368709564209,
+          "meanAbsoluteError": 0.0016485183732584119
+        }
+      ],
+      "checkpoint": {
+        "path": "data\\training\\model-compact-full\\gru-l.pt",
+        "sha256": "76b7959ce24f7def1cc03fd5e8a86fd54b059cba13f04982298438df056190ea"
+      },
+      "architecture": {
+        "embedding": 96,
+        "hidden": 256,
+        "layers": 1
+      }
+    },
+    "transformer-l": {
+      "path": "codecs\\neural-codec\\models\\transformer-l.bin",
+      "bytes": 303555,
+      "sha256": "241d3e937749f88acd77bec75a3656db3f01692c9a63ef2ab7b76751b638c6f3",
+      "quantization": [
+        {
+          "name": "embedding.weight",
+          "rows": 92,
+          "columns": 96,
+          "maximumAbsoluteError": 0.01012808084487915,
+          "meanAbsoluteError": 0.002462618052959442
+        },
+        {
+          "name": "position.weight",
+          "rows": 512,
+          "columns": 96,
+          "maximumAbsoluteError": 0.0069505274295806885,
+          "meanAbsoluteError": 0.0016014156863093376
+        },
+        {
+          "name": "encoder.layers.0.self_attn.in_proj_weight",
+          "rows": 288,
+          "columns": 96,
+          "maximumAbsoluteError": 0.006201565265655518,
+          "meanAbsoluteError": 0.0014771245187148452
+        },
+        {
+          "name": "encoder.layers.0.self_attn.out_proj.weight",
+          "rows": 96,
+          "columns": 96,
+          "maximumAbsoluteError": 0.007908463478088379,
+          "meanAbsoluteError": 0.0012587811797857285
+        },
+        {
+          "name": "encoder.layers.0.linear1.weight",
+          "rows": 192,
+          "columns": 96,
+          "maximumAbsoluteError": 0.0046818191185593605,
+          "meanAbsoluteError": 0.0015077589778229594
+        },
+        {
+          "name": "encoder.layers.0.linear2.weight",
+          "rows": 96,
+          "columns": 192,
+          "maximumAbsoluteError": 0.005154106765985489,
+          "meanAbsoluteError": 0.0015367567539215088
+        },
+        {
+          "name": "encoder.layers.1.self_attn.in_proj_weight",
+          "rows": 288,
+          "columns": 96,
+          "maximumAbsoluteError": 0.0067358314990997314,
+          "meanAbsoluteError": 0.0015505023766309023
+        },
+        {
+          "name": "encoder.layers.1.self_attn.out_proj.weight",
+          "rows": 96,
+          "columns": 96,
+          "maximumAbsoluteError": 0.004221782553941011,
+          "meanAbsoluteError": 0.0013755385298281908
+        },
+        {
+          "name": "encoder.layers.1.linear1.weight",
+          "rows": 192,
+          "columns": 96,
+          "maximumAbsoluteError": 0.005181461572647095,
+          "meanAbsoluteError": 0.0016340083675459027
+        },
+        {
+          "name": "encoder.layers.1.linear2.weight",
+          "rows": 96,
+          "columns": 192,
+          "maximumAbsoluteError": 0.005992777645587921,
+          "meanAbsoluteError": 0.001753616495989263
+        },
+        {
+          "name": "encoder.layers.2.self_attn.in_proj_weight",
+          "rows": 288,
+          "columns": 96,
+          "maximumAbsoluteError": 0.00760650634765625,
+          "meanAbsoluteError": 0.001563811907544732
+        },
+        {
+          "name": "encoder.layers.2.self_attn.out_proj.weight",
+          "rows": 96,
+          "columns": 96,
+          "maximumAbsoluteError": 0.006907820701599121,
+          "meanAbsoluteError": 0.0015094338450580835
+        },
+        {
+          "name": "encoder.layers.2.linear1.weight",
+          "rows": 192,
+          "columns": 96,
+          "maximumAbsoluteError": 0.0067474134266376495,
+          "meanAbsoluteError": 0.0017432445893064141
+        },
+        {
+          "name": "encoder.layers.2.linear2.weight",
+          "rows": 96,
+          "columns": 192,
+          "maximumAbsoluteError": 0.012075662612915039,
+          "meanAbsoluteError": 0.0021902811713516712
+        }
+      ],
+      "checkpoint": {
+        "path": "data\\training\\model-compact-full\\transformer-l.pt",
+        "sha256": "9ff827a5cab1d9934406ebdd392339e828281cdc3fc896b385cba4ce692db113"
+      },
+      "architecture": {
+        "dimension": 96,
+        "heads": 6,
+        "layers": 3,
+        "feedforward": 192,
+        "maximumLength": 512
+      }
+    }
+  }
+}

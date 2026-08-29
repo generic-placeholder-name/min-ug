@@ -1,0 +1,54 @@
+{
+  "name": "min-ug",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "min.ug — exact, measurable stateless URL compression",
+  "engines": {
+    "node": ">=22.13.0"
+  },
+  "scripts": {
+    "build": "npm run build:lib && npm run build:web",
+    "build:lib": "tsc -p tsconfig.build.json && npm run codec:release:verify",
+    "build:web": "npm run codec:release:verify && vite build --config web/vite.config.ts && tsx tools/verify-web-build.ts",
+    "dev": "vite --config web/vite.config.ts",
+    "preview": "vite preview --config web/vite.config.ts",
+    "deploy": "wrangler deploy",
+    "deploy:checked": "npm run check && npm run build:web && wrangler deploy",
+    "typecheck": "tsc -p tsconfig.json",
+    "check": "npm run typecheck && npm run codec:release:verify && npm test",
+    "corpus:fetch": "tsx tools/corpus/fetch.ts",
+    "corpus:prepare": "tsx tools/corpus/cli.ts prepare",
+    "corpus:common-crawl": "tsx tools/corpus/common-crawl/cli.ts",
+    "bench": "tsx tools/bench/cli.ts",
+    "fixture:identity": "tsx tools/build-identity-codec.ts",
+    "codec:neural:build": "tsx tools/build-neural-codecs.ts",
+    "codec:neural:compare-build": "tsx tools/build-neural-codecs.ts --compare-entropy-coders",
+    "codec:neural:bench": "tsx tools/bench/neural-codecs.ts",
+    "codec:release:verify": "tsx tools/verify-codec-releases.ts",
+    "codec:release:fixtures:update": "tsx tools/update-codec-release-fixtures.ts",
+    "rules:firefox": "tsx tools/update-firefox-query-stripping.ts",
+    "rules:firefox:check": "tsx tools/update-firefox-query-stripping.ts --check",
+    "test": "tsx --test test/*.test.ts",
+    "training:sync": "uv sync --locked",
+    "training:loader-bench": "uv run --locked python -m training.loader_benchmark",
+    "training:models": "uv run --locked python -m training.model_benchmark",
+    "training:test": "uv run --locked python -m unittest discover -s training -p \"test_*.py\""
+  },
+  "devDependencies": {
+    "@types/node": "^20.19.0",
+    "tsx": "^4.23.12",
+    "typescript": "^7.0.2",
+    "vite": "^8.2.2",
+    "wrangler": "^4.127.1"
+  },
+  "dependencies": {
+    "@aws-sdk/client-athena": "^3.1120.0",
+    "@aws-sdk/client-s3": "^3.1120.0",
+    "@duckdb/node-api": "^1.5.5-r.4",
+    "@fontsource-variable/noto-sans": "^5.3.0",
+    "@fontsource-variable/outfit": "^5.3.0",
+    "@fontsource-variable/source-code-pro": "^5.3.0",
+    "lean-qr": "^2.7.3"
+  }
+}

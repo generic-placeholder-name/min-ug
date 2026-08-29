@@ -1,0 +1,35 @@
+{
+  "schemaVersion": 2,
+  "createdAt": "2026-08-29T01:35:04.199Z",
+  "target": "wasm32-unknown-unknown",
+  "wasmFeatures": [
+    "simd128"
+  ],
+  "quantization": "symmetric int8 per output row; f32 activation execution",
+  "probabilityTotal": 4096,
+  "entropyCoder": "arithmetic",
+  "artifacts": [
+    {
+      "model": "gru-l",
+      "entropyCoder": "arithmetic",
+      "codecId": 1,
+      "stability": "frozen",
+      "path": "codecs/artifacts/gru-l.wasm",
+      "bytes": 347180,
+      "gzipBytes": 310285,
+      "brotliBytes": 304669,
+      "sha256": "f5442634407f76cc28e7494a17343e84b0c96feb4d92170186dffd1d27d8c79b"
+    },
+    {
+      "model": "transformer-l",
+      "entropyCoder": "arithmetic",
+      "codecId": null,
+      "stability": "experimental",
+      "path": "codecs/artifacts/transformer-l.wasm",
+      "bytes": 339361,
+      "gzipBytes": 303077,
+      "brotliBytes": 296088,
+      "sha256": "df40aa8a7cb58bd0c9e375c3cc71bbbefad41d24e313d62421164dbc93859b39"
+    }
+  ]
+}

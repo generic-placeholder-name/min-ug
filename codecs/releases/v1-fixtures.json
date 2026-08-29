@@ -1,0 +1,27 @@
+{
+  "schemaVersion": 1,
+  "codecId": 1,
+  "wasmSha256": "f5442634407f76cc28e7494a17343e84b0c96feb4d92170186dffd1d27d8c79b",
+  "framing": "10 || opaque payload bytes",
+  "alphabet": "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz-._~!$&'()*+,;=:@/?",
+  "vectors": [
+    {
+      "url": "https://example.com/",
+      "payloadHex": "ed37343c20",
+      "fragment": "BV(r37X",
+      "displayLink": "min.ug#BV(r37X"
+    },
+    {
+      "url": "https://example.com/a/b?next=a%3Db%3Dc#inner",
+      "payloadHex": "ed37343a00af31b066ca4a6c91886b6f6acfe0",
+      "fragment": "2ou$LC1J54r8.X'm,daD7oFGt",
+      "displayLink": "min.ug#2ou$LC1J54r8.X'm,daD7oFGt"
+    },
+    {
+      "url": "https://example.com/%E6%97%A5%E6%9C%AC%E8%AA%9E?q=%F0%9F%98%80",
+      "payloadHex": "ed373439b8831787d84557eb4dd19954",
+      "fragment": "6xybztF19M6bW~c;vPql:",
+      "displayLink": "min.ug#6xybztF19M6bW~c;vPql:"
+    }
+  ]
+}

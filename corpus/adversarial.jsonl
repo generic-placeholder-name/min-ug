@@ -1,0 +1,17 @@
+{"name":"empty-and-trailing-segments","url":"https://example.com/a//b/","tags":["empty-segment","trailing-slash"]}
+{"name":"ipv6-literal","url":"https://[2001:db8::1]/x","tags":["ipv6","unusual-host"]}
+{"name":"underscore-host","url":"https://_dmarc.example.com/x","tags":["underscore-host","unusual-host"]}
+{"name":"userinfo","url":"https://alice:secret@example.com/private","tags":["userinfo"]}
+{"name":"mixed-case-escapes","url":"https://example.com/%2f/%Aa?q=%bB","tags":["percent-escape","mixed-case-escape"]}
+{"name":"wrapped-url","url":"https://example.com/redirect?url=https%3A%2F%2Fexample.org%2Fa%3Fx%3D1","tags":["wrapped-url"]}
+{"name":"doubly-wrapped-url","url":"https://example.com/redirect?url=https%253A%252F%252Fexample.org%252Fa%253Fx%253D1","tags":["wrapped-url","double-encoded"]}
+{"name":"probable-signature","url":"https://cdn.example.com/object?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Signature=a%2Bb%2Fc","tags":["signed-url","percent-plus"]}
+{"name":"valueless-parameters","url":"https://example.com/path?flag&empty=&x=1","tags":["valueless-parameter"]}
+{"name":"plus-versus-percent-plus","url":"https://example.com/path?bare=a+b&escaped=a%2Bb","tags":["plus","percent-plus"]}
+{"name":"bare-query","url":"https://example.com/path?","tags":["bare-query"]}
+{"name":"bare-fragment","url":"https://example.com/path#","tags":["bare-fragment"]}
+{"name":"malformed-percent-escape","url":"https://example.com/x%C3y?q=%zz","tags":["malformed-percent-escape"]}
+{"name":"equals-in-query-value","url":"https://example.com/path?next=a=b=c","tags":["query-value-equals"]}
+{"name":"low-percent-escapes","url":"https://example.com/path?bytes=%00%01%0A%0F","tags":["percent-escape","low-byte"]}
+{"name":"opaque-hash","url":"https://example.com/blobs/0123456789abcdef0123456789abcdef01234567","tags":["hash"]}
+{"name":"uuid","url":"https://example.com/items/123e4567-e89b-12d3-a456-426614174000","tags":["uuid"]}

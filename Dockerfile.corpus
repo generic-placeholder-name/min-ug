@@ -1,0 +1,18 @@
+FROM node:24-bookworm-slim
+
+WORKDIR /app
+COPY package.json package-lock.json ./
+RUN npm ci --include=dev
+
+COPY tsconfig.json tsconfig.build.json ./
+COPY corpus ./corpus
+COPY src ./src
+COPY tools ./tools
+COPY training ./training
+
+RUN mkdir -p /data /work && chown -R node:node /app /data /work
+USER node
+
+VOLUME ["/data", "/work"]
+ENTRYPOINT ["npm", "run", "corpus:common-crawl", "--"]
+CMD ["--help"]

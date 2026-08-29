@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#f6f8fa">
+    <meta name="description" content="Compress links entirely in your browser with min.ug.">
+    <meta property="og:title" content="min.ug — Make that link smaller.">
+    <meta property="og:description" content="Small, exact, stateless links. Compressed entirely in your browser.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://min.ug/">
+    <meta property="og:image" content="https://min.ug/og.png">
+    <meta property="og:image:alt" content="min.ug — Make that link smaller.">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="min.ug — Make that link smaller.">
+    <meta name="twitter:description" content="Small, exact, stateless links. Compressed entirely in your browser.">
+    <meta name="twitter:image" content="https://min.ug/og.png">
+    <meta name="twitter:image:alt" content="min.ug — Make that link smaller.">
+    <title>min.ug — Make that link smaller.</title>
+    <script>
+      try {
+        const savedTheme = localStorage.getItem("minug-theme");
+        if (savedTheme === "light" || savedTheme === "dark") {
+          document.documentElement.dataset.theme = savedTheme;
+        }
+      } catch {}
+    </script>
+  </head>
+  <body>
+    <div class="page-shell">
+      <header>
+        <a
+          class="corner-control github-link"
+          href="https://github.com/generic-placeholder-name/min-ug"
+          target="_blank"
+          rel="noreferrer"
+          aria-label="min.ug on GitHub"
+          title="min.ug on GitHub"
+        >
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M12 .7a11.5 11.5 0 0 0-3.64 22.41c.58.11.79-.25.79-.56v-2.24c-3.22.7-3.9-1.37-3.9-1.37-.52-1.34-1.28-1.69-1.28-1.69-1.05-.72.08-.7.08-.7 1.16.08 1.77 1.19 1.77 1.19 1.03 1.77 2.7 1.26 3.36.96.1-.75.4-1.26.73-1.55-2.57-.29-5.27-1.28-5.27-5.69 0-1.26.45-2.28 1.19-3.09-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.16 1.18a10.96 10.96 0 0 1 5.76 0c2.19-1.49 3.15-1.18 3.15-1.18.63 1.59.23 2.76.11 3.05.74.81 1.19 1.83 1.19 3.09 0 4.42-2.71 5.39-5.29 5.68.42.36.79 1.06.79 2.14v3.17c0 .31.21.68.8.56A11.5 11.5 0 0 0 12 .7Z"/>
+          </svg>
+        </a>
+        <button class="corner-control theme-toggle" id="theme-toggle" type="button">
+          <svg id="theme-icon-moon" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M20.4 15.2A8.5 8.5 0 0 1 8.8 3.6 8.5 8.5 0 1 0 20.4 15.2Z"/>
+          </svg>
+          <svg id="theme-icon-sun" viewBox="0 0 24 24" aria-hidden="true" hidden>
+            <circle cx="12" cy="12" r="3.5"/>
+            <path d="M12 2v2M12 20v2M4.93 4.93l1.42 1.42M17.65 17.65l1.42 1.42M2 12h2M20 12h2M4.93 19.07l1.42-1.42M17.65 6.35l1.42-1.42"/>
+          </svg>
+        </button>
+      </header>
+
+      <main>
+        <section class="compressor" id="compressor-view" aria-labelledby="title">
+          <h1 id="title"><span>min</span><span class="dot">.</span><span>ug</span></h1>
+          <p class="instruction">Paste a link to shorten it.</p>
+
+          <form id="compressor-form" novalidate>
+            <label class="visually-hidden" for="input-link">Link to shorten</label>
+            <input
+              type="url"
+              id="input-link"
+              name="url"
+              placeholder="https://some-long.link/"
+              inputmode="url"
+              autocomplete="url"
+              autocapitalize="off"
+              spellcheck="false"
+              autofocus
+            >
+            <p class="message" id="input-message" aria-live="polite"></p>
+
+            <div class="risk-confirmation" id="risk-confirmation" hidden>
+              <p id="risk-message"></p>
+              <button class="plain-button compact-button" id="confirm-risk" type="button">Shorten anyway</button>
+            </div>
+
+            <details class="options">
+              <summary>Options</summary>
+              <div class="option-row">
+                <label for="canonicalization-preset">Link cleanup</label>
+                <select id="canonicalization-preset" name="canonicalization">
+                  <option value="exact">Exact</option>
+                  <option value="clean" selected>Clean</option>
+                  <option value="aggressive">Aggressive</option>
+                </select>
+              </div>
+              <p class="option-help" id="canonicalization-help">Remove conservatively identified tracking parameters.</p>
+            </details>
+          </form>
+
+          <section class="result" id="result" aria-labelledby="result-label" hidden>
+            <p class="label" id="result-label">Compressed link:</p>
+            <div class="result-row">
+              <a id="output-link" target="_blank" rel="noreferrer"></a>
+              <button id="copy-link" type="button">Copy</button>
+            </div>
+            <p class="saving" id="result-detail"></p>
+            <p class="cleanup-warning" id="cleanup-warning" aria-live="polite" hidden></p>
+            <details class="cleanup-details" id="cleanup-details" hidden>
+              <summary id="cleanup-summary"></summary>
+              <ul id="cleanup-list"></ul>
+            </details>
+
+            <label class="qr-toggle">
+              <input type="checkbox" id="show-qr" name="show-qr">
+              <span>QR code</span>
+            </label>
+
+            <section class="qr-panel" id="qr-panel" aria-label="QR code" hidden>
+              <canvas id="qr-code" role="img" aria-label="QR code for the compressed link"></canvas>
+              <div class="qr-config">
+                <div class="qr-config-label">
+                  <label for="qr-correction">Error correction</label>
+                  <output id="qr-correction-label" for="qr-correction">Medium</output>
+                </div>
+                <input type="range" id="qr-correction" min="0" max="3" step="1" value="1">
+              </div>
+              <button class="save-button" id="save-qr" type="button" disabled>Save PNG</button>
+              <p class="qr-message" id="qr-status" aria-live="polite" hidden></p>
+            </section>
+          </section>
+        </section>
+
+        <section class="redirect" id="redirect-view" aria-labelledby="redirect-title" tabindex="-1" hidden>
+          <h1 id="redirect-title">Open this link?</h1>
+          <p><a id="redirect-link" rel="noreferrer"></a></p>
+          <div class="redirect-actions">
+            <button id="continue-link" type="button">Open</button>
+            <button class="plain-button" id="back-home" type="button">Back</button>
+          </div>
+        </section>
+      </main>
+
+      <footer>
+        <a href="https://github.com/p2r3/ha.mr" target="_blank" rel="noreferrer">Based on ha.mr</a>
+      </footer>
+    </div>
+
+    <script type="module" src="/main.ts"></script>
+  </body>
+</html>

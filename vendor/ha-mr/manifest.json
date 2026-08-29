@@ -1,0 +1,29 @@
+{
+  "schemaVersion": 1,
+  "name": "ha.mr latest baseline",
+  "repository": "https://github.com/p2r3/ha.mr",
+  "branch": "main",
+  "revision": "ac46e7c8da33eca16528776f5ce79f1f0a661f0a",
+  "committedAt": "2026-08-21T04:52:33+03:00",
+  "commitSubject": "fix: preserve equals signs in query parameter values",
+  "vendoredAt": "2026-08-25",
+  "license": "MIT",
+  "files": {
+    "compress.js": {
+      "upstreamPath": "docs/compress.js",
+      "bytes": 129647,
+      "sha256": "1ea38be0d73fbb3200f5f1f60f59c0305243e8b295c60f7277ca9218dd286e8a"
+    },
+    "alphabets.js": {
+      "upstreamPath": "docs/alphabets.js",
+      "bytes": 56954,
+      "sha256": "ce981faaadaa62eda08a0cfa97b17f537b000b4561c4f29938478b16bbf3e078"
+    },
+    "LICENSE": {
+      "upstreamPath": "LICENSE",
+      "bytes": 1082,
+      "sha256": "3fbe13c00867c0711c0f0e7a8d2fd9ef0d4d7724c202159ed3db4acdbdd04ca8"
+    }
+  }
+}
+

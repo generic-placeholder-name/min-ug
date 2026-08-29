@@ -1,0 +1,9 @@
+data
+dist
+node_modules
+reports
+test
+vendor
+*.tmp
+*.part
+*.duckdb

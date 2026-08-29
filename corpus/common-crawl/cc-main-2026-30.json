@@ -1,0 +1,22 @@
+{
+  "schemaVersion": 1,
+  "id": "cc-main-2026-30-balanced-v1",
+  "crawl": "CC-MAIN-2026-30",
+  "description": "Deterministic, storage-bounded sample of successful public web URLs from the Common Crawl URL Index",
+  "index": {
+    "database": "ccindex",
+    "table": "ccindex",
+    "location": "s3://commoncrawl/cc-index/table/cc-main/warc/"
+  },
+  "sampling": {
+    "profile": "balanced-v1",
+    "seed": "min-ug-common-crawl-v1",
+    "candidateMultiplier": 2,
+    "hostBalancedFraction": 0.8,
+    "maximumUrlsPerHost": 16,
+    "hashBuckets": 1000000,
+    "protocols": ["http", "https"],
+    "statuses": [200],
+    "mimeTypes": ["text/html", "application/pdf"]
+  }
+}

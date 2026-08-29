@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "sources": [
+    {
+      "id": "ada-url",
+      "description": "Real-world URL benchmark corpus from ada-url/url-dataset",
+      "repository": "https://github.com/ada-url/url-dataset",
+      "revision": "ef7065196980ab7956bacc60b4bda663939f659c",
+      "url": "https://raw.githubusercontent.com/ada-url/url-dataset/ef7065196980ab7956bacc60b4bda663939f659c/out.txt",
+      "license": "MIT OR Apache-2.0",
+      "output": "data/raw/ada-url.txt",
+      "bytes": 8788216,
+      "lineCount": 100025,
+      "sha256": "b11a9be08fc3065413e60b1bcddcb2b50ee0eb4923158d1a1a9e251cf89970d3"
+    }
+  ]
+}
