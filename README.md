@@ -1,6 +1,6 @@
 # min.ug
 
-min.ug turns long URLs into shorter, self-contained links.
+[min.ug](min.ug) turns long URLs into shorter, self-contained links.
 
 Compression and decompression happen entirely client-side in the browser. There is no link database: the destination is encoded after `min.ug#`, so the server never receives it. Links can be copied as text or saved as QR codes, with optional cleanup for common tracking parameters.
 
