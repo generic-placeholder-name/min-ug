@@ -1,6 +1,7 @@
 import {
   canonicalize,
   CanonicalizationError,
+  type CanonicalUrl,
   type CanonicalizationChange,
   type CanonicalizationPreset,
   type CanonicalizationResult,
@@ -86,7 +87,6 @@ function updateThemeControl (): void {
   themeMoon.toggleAttribute("hidden", nextTheme !== "dark");
   themeSun.toggleAttribute("hidden", nextTheme !== "light");
   themeToggle.setAttribute("aria-label", `Switch to ${nextTheme} theme`);
-  themeToggle.title = `Switch to ${nextTheme} theme`;
   themeToggle.title = `Switch to ${nextTheme} theme`;
   document.querySelector<HTMLMetaElement>('meta[name="theme-color"]')?.setAttribute(
     "content",
@@ -317,8 +317,7 @@ async function copyText (value: string): Promise<void> {
   const fallback = document.createElement("textarea");
   fallback.value = value;
   fallback.setAttribute("readonly", "");
-  fallback.style.position = "fixed";
-  fallback.style.opacity = "0";
+  fallback.className = "clipboard-fallback";
   document.body.append(fallback);
   fallback.select();
   const copied = document.execCommand("copy");
@@ -391,7 +390,7 @@ async function downloadQr (): Promise<void> {
   }, 1_400);
 }
 
-function showRedirect (target: string): void {
+function showRedirect (target: CanonicalUrl): void {
   redirectLink.textContent = target;
   redirectLink.href = target;
   compressorView.hidden = true;

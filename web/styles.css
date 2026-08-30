@@ -492,6 +492,14 @@ button:disabled {
   background: transparent;
 }
 
+.clipboard-fallback {
+  position: fixed;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  pointer-events: none;
+}
+
 @media (max-width: 32rem) {
   header,
   footer {

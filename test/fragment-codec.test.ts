@@ -26,6 +26,11 @@ function errorCode (code: string): (error: unknown) => boolean {
   return error => error instanceof FragmentCodecError && error.code === code;
 }
 
+function renderLiteral (value: string | Uint8Array): string {
+  const payload = typeof value === "string" ? encoder.encode(value) : value;
+  return renderBitString(framePayload({ kind: "literal", payload }));
+}
+
 test("base-81 rendering preserves arbitrary framed bytes and their exact bit length", () => {
   assert.equal(FRAGMENT_ALPHABET.length, 81);
   for (let length = 0; length <= 64; length += 1) {
@@ -87,6 +92,64 @@ test("versioned fragment codec renders v1 and can still dispatch future IDs", ()
   const future = v2.encodeFragment(value);
   assert.equal(v1.decodeFragment(future), value);
   assert.notEqual(fragment, future);
+});
+
+test("literal frames decode only exact canonical HTTP(S) URLs", () => {
+  const codec = createVersionedFragmentCodec(new Map([[1, identityCodec]]), 1);
+  const accepted = [
+    "http://example.com/",
+    "https://example.com/a?b=c#d"
+  ];
+  for (const value of accepted) {
+    assert.equal(codec.decodeFragment(renderLiteral(value)), value);
+  }
+
+  const rejected = [
+    "javascript:alert(1)",
+    "data:text/html,<script>alert(1)</script>",
+    "file:///etc/passwd",
+    "mailto:hello@example.com",
+    "//example.com/path",
+    "not a URL",
+    "https://EXAMPLE.com/",
+    "https://example.com",
+    "https://example.com/é"
+  ];
+  for (const value of rejected) {
+    assert.throws(
+      () => codec.decodeFragment(renderLiteral(value)),
+      errorCode("invalid-decoded-url"),
+      value
+    );
+  }
+  assert.throws(
+    () => codec.decodeFragment(renderLiteral(Uint8Array.of(0xc3, 0x28))),
+    errorCode("invalid-utf8")
+  );
+});
+
+test("all codec outputs pass through the same URL safety boundary", () => {
+  const hostileCodec: LoadedCodec = {
+    encode: () => new Uint8Array(),
+    decode: () => "javascript:alert(document.domain)"
+  };
+  const codec = createVersionedFragmentCodec(new Map([[1, hostileCodec]]), 1);
+  const fragment = renderBitString(framePayload({
+    kind: "codec",
+    codecId: 1,
+    payload: new Uint8Array()
+  }));
+  assert.throws(() => codec.decodeFragment(fragment), errorCode("invalid-decoded-url"));
+});
+
+test("decoded canonical URLs have an independent byte limit", () => {
+  const codec = createVersionedFragmentCodec(new Map([[1, identityCodec]]), 1, {
+    maximumCanonicalUrlBytes: 20
+  });
+  assert.throws(
+    () => codec.decodeFragment(renderLiteral("https://example.com/a")),
+    errorCode("decoded-url-limit")
+  );
 });
 
 test("malformed, reserved, and unavailable frames fail instead of guessing a codec", () => {

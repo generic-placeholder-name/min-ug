@@ -17,14 +17,7 @@
     <meta name="twitter:image" content="https://min.ug/og.png">
     <meta name="twitter:image:alt" content="min.ug — Make that link smaller.">
     <title>min.ug — Make that link smaller.</title>
-    <script>
-      try {
-        const savedTheme = localStorage.getItem("minug-theme");
-        if (savedTheme === "light" || savedTheme === "dark") {
-          document.documentElement.dataset.theme = savedTheme;
-        }
-      } catch {}
-    </script>
+    <script type="module" src="/theme-init.ts"></script>
   </head>
   <body>
     <div class="page-shell">

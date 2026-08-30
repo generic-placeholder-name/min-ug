@@ -1,3 +1,4 @@
+import { isCanonicalUrlByteSpelling } from "../canonicalize/codec-domain.js";
 import type { CanonicalUrl } from "../canonicalize/index.js";
 import type { LoadedCodec } from "./wasm-adapter.js";
 
@@ -24,8 +25,8 @@ export type FramedPayload =
 export class FragmentCodecError extends Error {
   readonly code: string;
 
-  constructor (code: string, message: string) {
-    super(message);
+  constructor (code: string, message: string, options?: ErrorOptions) {
+    super(message, options);
     this.name = "FragmentCodecError";
     this.code = code;
   }
@@ -34,15 +35,19 @@ export class FragmentCodecError extends Error {
 export interface VersionedFragmentCodec {
   readonly currentCodecId: number;
   encodeFragment(url: CanonicalUrl): string;
-  decodeFragment(fragment: string): string;
-  decodeHash(hash: string): string;
+  decodeFragment(fragment: string): CanonicalUrl;
+  decodeHash(hash: string): CanonicalUrl;
   render(url: CanonicalUrl): string;
 }
 
 export interface VersionedFragmentCodecOptions {
   readonly maximumRenderedCharacters?: number;
   readonly maximumPayloadBytes?: number;
+  readonly maximumCanonicalUrlBytes?: number;
 }
+
+const utf8Decoder = new TextDecoder("utf-8", { fatal: true });
+const utf8Encoder = new TextEncoder();
 
 function requireCodecId (codecId: number): void {
   if (!Number.isSafeInteger(codecId) || codecId < 1) {
@@ -239,8 +244,51 @@ export function createVersionedFragmentCodec (
   for (const id of codecs.keys()) requireCodecId(id);
   const maximumRenderedCharacters = options.maximumRenderedCharacters ?? 1024 * 1024;
   const maximumPayloadBytes = options.maximumPayloadBytes ?? 1024 * 1024;
+  const maximumCanonicalUrlBytes = options.maximumCanonicalUrlBytes ?? 1024 * 1024;
   if (!Number.isSafeInteger(maximumPayloadBytes) || maximumPayloadBytes < 0) {
     throw new FragmentCodecError("invalid-limit", "maximumPayloadBytes must be a nonnegative integer");
+  }
+  if (!Number.isSafeInteger(maximumCanonicalUrlBytes) || maximumCanonicalUrlBytes < 1) {
+    throw new FragmentCodecError(
+      "invalid-limit",
+      "maximumCanonicalUrlBytes must be a positive integer"
+    );
+  }
+
+  function validateDecodedUrl (value: unknown): CanonicalUrl {
+    if (typeof value !== "string") {
+      throw new FragmentCodecError("invalid-decoded-url", "Codec output must be a URL string");
+    }
+    const byteLength = utf8Encoder.encode(value).byteLength;
+    if (byteLength > maximumCanonicalUrlBytes) {
+      throw new FragmentCodecError(
+        "decoded-url-limit",
+        `Decoded URL is ${byteLength} bytes; the limit is ${maximumCanonicalUrlBytes}`
+      );
+    }
+
+    let parsed;
+    try {
+      parsed = new URL(value);
+    } catch {
+      throw new FragmentCodecError(
+        "invalid-decoded-url",
+        "Decoded value is not an absolute URL"
+      );
+    }
+    if (parsed.protocol !== "http:" && parsed.protocol !== "https:") {
+      throw new FragmentCodecError(
+        "invalid-decoded-url",
+        "Decoded URL must use http or https"
+      );
+    }
+    if (parsed.href !== value || !isCanonicalUrlByteSpelling(value)) {
+      throw new FragmentCodecError(
+        "invalid-decoded-url",
+        "Decoded URL is not in canonical codec form"
+      );
+    }
+    return value as CanonicalUrl;
   }
 
   function encodeFragment (url: CanonicalUrl): string {
@@ -261,7 +309,7 @@ export function createVersionedFragmentCodec (
     return rendered;
   }
 
-  function decodeFragment (fragment: string): string {
+  function decodeFragment (fragment: string): CanonicalUrl {
     const framed = unframePayload(parseBitString(fragment, maximumRenderedCharacters));
     if (framed.payload.length > maximumPayloadBytes) {
       throw new FragmentCodecError(
@@ -269,10 +317,18 @@ export function createVersionedFragmentCodec (
         `Codec payload is ${framed.payload.length} bytes; the limit is ${maximumPayloadBytes}`
       );
     }
-    if (framed.kind === "literal") return new TextDecoder("utf-8", { fatal: true }).decode(framed.payload);
+    if (framed.kind === "literal") {
+      let decoded;
+      try {
+        decoded = utf8Decoder.decode(framed.payload);
+      } catch (cause) {
+        throw new FragmentCodecError("invalid-utf8", "Literal frame is not valid UTF-8", { cause });
+      }
+      return validateDecodedUrl(decoded);
+    }
     const codec = codecs.get(framed.codecId);
     if (!codec) throw new FragmentCodecError("unknown-codec", `Codec ${framed.codecId} is not loaded`);
-    return codec.decode(framed.payload);
+    return validateDecodedUrl(codec.decode(framed.payload));
   }
 
   return Object.freeze({

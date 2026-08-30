@@ -20,6 +20,8 @@ export async function instantiateV1Codec (
     V1_RELEASE.id,
     {
       maximumPayloadBytes: limits.maxPayloadBytes ?? V1_RELEASE.maximumPayloadBytes,
+      maximumCanonicalUrlBytes:
+        limits.maxCanonicalUrlBytes ?? V1_RELEASE.maximumCanonicalUrlBytes,
       maximumRenderedCharacters: Math.ceil(
         ((limits.maxPayloadBytes ?? V1_RELEASE.maximumPayloadBytes) * 8 + 64) /
         Math.log2(81)
